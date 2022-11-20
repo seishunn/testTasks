@@ -1,29 +1,31 @@
 import {makeAutoObservable} from "mobx";
-import {ButtonInterface} from "../models";
+import { ButtonsArrayInterface} from "../models";
 import {getNewArray} from "./countries";
 
-export interface ButtonsArrayInterface {
-    id: number
-    buttonsLeft: Array<ButtonInterface>
-    buttonsRight: Array<ButtonInterface>
-    inputText: string
-}
+
 
 class Buttons {
     controlList: Array<ButtonsArrayInterface> = [
         {id: 1, buttonsLeft: [], buttonsRight: [
-                {name: 'Очистить содержимое', func: () => {this.updateInputText('', 1)}},
-                {name: 'Замена содержимого', func: () => {this.updateInputText('hello world!', 1)}},
+                {name: 'Очистить содержимое', func: (id: number) => {this.updateInputText('', id)}},
+                {name: 'Замена содержимого', func: (id: number) => {this.updateInputText('hello world!', id)}},
             ], inputText: ''},
         {id: 2, buttonsLeft: [
-                {name: 'Проверка на число', func: () => {alert('Это число')}},
+                {name: 'Проверка на число', func: (id: number) => {
+                    if (!isNaN(Number(this.getInputText(id)))) {
+                        alert(this.getInputText(id));
+                    }
+                }},
             ], buttonsRight: [
-                {name: 'Показ текста в контроле', func: () => {alert()}},
+                {name: 'Показ текста в контроле', func: (id: number) => {
+                    alert(this.getInputText(id));
+                }},
             ], inputText: ''},
     ]
 
     constructor() {
         makeAutoObservable(this);
+        this.updateInputText = this.updateInputText.bind(this);
     }
 
     updateInputText (text: string, id: number) {
@@ -34,6 +36,19 @@ class Buttons {
         }
         this.controlList = getNewArray(this.controlList, id, callback);
     }
+
+    getInputText (id: number): string {
+        let str = '';
+
+        this.controlList.forEach((control: any) => {
+            if (control.id === id) {
+                str = control.inputText;
+            }
+        });
+
+        return str;
+    }
+
 }
 
 export default new Buttons;

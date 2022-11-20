@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
 import {observer} from "mobx-react-lite";
-import buttons, {ButtonsArrayInterface} from "./store/buttons";
+import buttons from "./store/buttons";
 import {ControlWithAutocomplete} from "./components/ControlWithAutocomplete/ControlWithAutocomplete";
-import countries, {ControlListInterface} from "./store/countries";
-import {toJS} from "mobx";
-import {ButtonInterface} from "./models";
+import countries from "./store/countries";
+import {ButtonsArrayInterface, ControlListInterface} from "./models";
+
 const {ControlWithButtons} = require("./components/ControlWithButtons/ControlWithButtons");
 
 const App = observer(() => {
@@ -16,10 +16,17 @@ const App = observer(() => {
                     control={control}
                     key={control.id}
                     id={control.id}
+                    updateInputText={buttons.updateInputText}
                 />
             })}
             {countries.controlList.map((c: ControlListInterface) => {
-                return <ControlWithAutocomplete control={c} maxLength={c.maxLength} key={c.id}/>
+                return <ControlWithAutocomplete
+                    control={c}
+                    maxLength={c.maxLength}
+                    key={c.id}
+                    updateSearchCountryName={countries.updateSearchCountryName}
+                    selectCountry={countries.selectCountry}
+                />
             })}
         </div>
     );

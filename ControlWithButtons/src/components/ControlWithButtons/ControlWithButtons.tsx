@@ -1,33 +1,30 @@
-import React, {useState} from 'react';
-import {Button} from "./Button/Button";
-import {ButtonInterface} from "../../models";
+import React from 'react';
+import {ButtonsArrayInterface} from "../../models";
 import {observer} from "mobx-react-lite";
-import buttons, {ButtonsArrayInterface} from "../../store/buttons";
+import {Input} from "../Input/Input";
+import {ButtonsList} from "./ButtonsList";
 
-type PropsType = {
+interface PropsInterface {
     control: ButtonsArrayInterface,
     id: number
+    updateInputText: any
 }
 
 
-export const ControlWithButtons:React.FC<PropsType> = observer(({
+export const ControlWithButtons:React.FC<PropsInterface> = observer(({
         control,
-        id
-    }: PropsType): JSX.Element => {
+        id,
+        updateInputText
+    }): JSX.Element => {
 
     return (
         <div>
-            {control.buttonsLeft.map((e: ButtonInterface) => {
-                return <Button name={e.name} func={e.func}/>
-            })}
-            <input
-                type="text"
+            <ButtonsList arrayOfItems={control.buttonsLeft} id={id}/>
+            <Input
                 value={control.inputText}
-                onChange={(e: any) => buttons.updateInputText(e.target.value, id)}
+                onChange={(e: any) => updateInputText(e.target.value, id)}
             />
-            {control.buttonsRight.map((e: ButtonInterface) => {
-                return <Button name={e.name} func={e.func}/>
-            })}
+            <ButtonsList arrayOfItems={control.buttonsRight} id={id}/>
         </div>
     )
 })

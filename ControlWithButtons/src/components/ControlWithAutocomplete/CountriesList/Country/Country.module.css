@@ -1,0 +1,18 @@
+.flag {
+    position: relative;
+    height: 30px;
+    width: 80px;
+}
+.flag img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.name {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 5px;
+}
